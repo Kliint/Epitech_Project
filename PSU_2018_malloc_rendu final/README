@@ -1,0 +1,26 @@
+Projet EPITECH Malloc du Module PSU 2018
+
+Description:
+Le but du projet consiste à reproduire le comportement du system call malloc.
+Pour cela il a fallut recoder malloc, free et realloc.
+Voir l'optimiser.
+
+Usage:
+- 1ère étape: faire un "make" dans un terminal en se situant dans le repertoire;
+- 2ème étape: tester en incluant lors des flags de la compilation la lib dynamique créer.
+- 3ème étape: vérifier via l'outil valgrind afin de constater les allocation faite par la fonction malloc personnel.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Describe:
+The goal of the project is to reproduce the behavior of the system call "malloc".
+For this, it must be recode the malloc , free et realloc.
+We could optimize.
+
+Usage:
+- 1st step: make a "make" in the repository by a terminal;
+- 2nd step: test by including the dynamic library then you use flags instead the compilation;
+- 3rd step: check by valgrind tool to constate all allocation call by the function.
+
+
+README / Project Done by  Clinton MATHIYAS
