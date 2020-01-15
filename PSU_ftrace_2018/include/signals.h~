@@ -1,0 +1,49 @@
+#ifndef SIGNALS_H_
+# define SIGNALS_H_
+
+# define _GNU_SOURCE
+# include <signal.h>
+
+typedef	struct	s_signals
+{
+  int		nbr;
+  char		*name;
+}		t_signals;
+
+const t_signals		g_signals[] =
+{
+    {SIGHUP, "SIGHUP"},
+    {SIGTERM, "SIGTERM"},
+    {SIGQUIT, "SIGQUIT"},
+    {SIGILL, "SIGILL"},
+    {SIGTRAP, "SIGTRAP"},
+    {SIGABRT, "SIGABRT"},
+    {SIGBUS, "SIGBUS"},
+    {SIGFPE, "SIGFPE"},
+    {SIGKILL, "SIGKILL"},
+    {SIGUSR1, "SIGUSR1"},
+    {SIGSEGV, "SIGSEGV"},
+    {SIGUSR2, "SIGUSR2"},
+    {SIGPIPE, "SIGPIPE"},
+    {SIGALRM, "SIGALRM"},
+    {SIGTERM, "SIGTERM"},
+    {SIGSTKFLT, "SIGTKFLT"},
+    {SIGCHLD, "SIGCHLD"},
+    {SIGCONT, "SIGCONT"},
+    {SIGSTOP, "SIGSTOP"},
+    {SIGTSTP, "SIGTSTP"},
+    {SIGTTIN, "SIGTTIN"},
+    {SIGTTOU, "SIGTTOU"},
+    {SIGURG, "SIGURG"},
+    {SIGXCPU, "SIGXCPU"},
+    {SIGXFSZ, "SIGXFSZ"},
+    {SIGVTALRM, "SIGVTALRM"},
+    {SIGPROF, "SIGPROF"},
+    {SIGWINCH, "SIGWINCH"},
+    {SIGPOLL, "SIGPOLL"},
+    {SIGPWR, "SIGPWR"},
+    {SIGSYS, "SIGSYS"},
+    {-1, "UNKNOWN"}
+};
+
+#endif /* SIGNALS_H_*/

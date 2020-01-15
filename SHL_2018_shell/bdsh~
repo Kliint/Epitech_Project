@@ -1,0 +1,46 @@
+#!/bin/bash
+
+SUCESS=0;
+FAILURE=1;
+
+TABLE="NULL";
+VALUE="NULL";
+
+Usage() {
+    if [ -z "$1" ]; then
+        echo -e "Usage: ./bdsh [OPTION]... [COMMAND] [REQUEST]
+OPTION:
+  -h				display usage
+  -f FILE			json database file
+  -j                json formated output for select command
+" >&2
+        exit $FAILURE
+    fi
+}
+
+File() {
+    if [ -f "$3" ] && [ -r "$3" ] && [ -w "$3" ] ;then
+        echo -e "file error" >&2
+        exit $FAILURE
+    fi
+}
+
+Command() {
+    if [ "$4" ==  "create" ];then
+        echo -ne "$4" > $FILEPATH
+    fi
+    
+}
+
+Option() {
+    if [ "$2" == "-f" ];then
+        echo -e "\$2 Wrong option." >&2
+        exit $FAILURE
+    fi
+}
+
+
+Usage "$1"
+Option "$2"
+File "$3"
+Command "$4"
