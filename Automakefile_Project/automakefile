@@ -1,0 +1,118 @@
+#!/bin/bash
+
+if [ -z $1 ] || [ ! -f $1 ] || [ ! -r $1 ] || [ ! -z $2 ] || [ ! -s $1 ]
+	then
+			exit 84
+else
+	ZIP=$(cat $1 | grep ^'ZIP;' | cut -c5-)
+	ZIPFLAGS=$(cat $1 | grep ^'ZIPFLAGS;' | cut -c10-)
+	UNZIP=$(cat $1 | grep ^'UNZIP;' | cut -c7-)
+	UNZIPFLAGS=$(cat $1 | grep ^'UNZIPFLAGS;' | cut -c12-)
+	BCK_DIR=$(cat $1 | grep ^'BCK_DIR;' | cut -c9-)
+	EXEC=$(cat $1 | grep ^'EXEC;' | cut -c6-)
+	CC=$(cat $1 | grep ^'CC;' | cut -c4-)
+	CFLAGS=$(cat $1 | grep ^'CFLAGS;' | cut -c8-)
+	LDFLAGS=$(cat $1 | grep ^'LDFLAGS;' | cut -c9-)
+	LIBS_DIR=$(cat $1 | grep ^'LIBS_DIR;' | cut -c10-)
+	HEADERS_DIR=$(cat $1 | grep ^'HEADERS_DIR;' | cut -c13-)
+	SOURCES_DIR=$(cat $1 | grep ^'SOURCES_DIR;'| cut -c13-)
+	PROJECT_DIR=$(cat $1 | grep ^'PROJECT_DIR;'| cut -c13-)
+	SRCS=$(cat $1 | sed -e "s/;/\n\t\t/g" | grep ".*\.c$" | awk '{print "", $1, "\134"}')
+	RM=$(rm -f)
+
+	if [ ! -e $BCK_DIR/.version ]
+		then
+				echo '0'> $PROJECT_DIR/.version
+	fi
+	if [ -z SRCS ]
+	then
+		exit 84
+	fi
+ 	if [ -z PROJECT_DIR ]
+	then
+	 exit 84
+	fi
+	if [ -z CC ]
+	then
+	 CC= gcc
+	fi
+	if [ -z EXEC ]
+	then
+	 EXEC= a.out
+	fi
+	if [ -z SOURCES_DIR ]
+	then
+		SOURCES_DIR= $PROJECT_DIR
+	fi
+	if [ -z LAST ]
+	then
+		LAST=0
+	fi
+	NEW=$(($LAST + 1))
+	echo "##\n" > $PROJECT_DIR/Makefile
+	echo "## EPITECH PROJECT, 2018\n" >> $PROJECT_DIR/Makefile
+	echo "## Piscine de Synthèse\n" >> $PROJECT_DIR/Makefile
+	echo "## File description:\n" >> $PROJECT_DIR/Makefile
+	echo "## automakefile\n" >> $PROJECT_DIR/Makefile
+	echo "##\n\n" >> $PROJECT_DIR/Makefile
+	echo "SRCS		= $SRCS
+	" >> $PROJECT_DIR/Makefile
+	echo "NAME		= $EXEC
+	" >> $PROJECT_DIR/Makefile
+	echo "VERSION		= ./.version
+	" >> $PROJECT_DIR/Makefile
+	echo "LAST		= $(echo | cat $PROJECT_DIR/.version)
+	" >> $PROJECT_DIR/Makefile
+	echo "NEW		= $NEW
+	" >> $PROJECT_DIR/Makefile
+	echo "BACK_DIR		= $BCK_DIR
+	" >> $PROJECT_DIR/Makefile
+	echo "CC		= $CC
+	" >> $PROJECT_DIR/Makefile
+	echo "ZIP_NAME		= $ZIP
+	" >> $PROJECT_DIR/Makefile
+	echo "UNZIP_NAME		= $UNZIP
+	" >> $PROJECT_DIR/Makefile
+	echo "RM		= rm -f
+	" >> $PROJECT_DIR/Makefile
+	echo "ZIPFLAGS		= $ZIPFLAGS
+	" >> $PROJECT_DIR/Makefile
+	echo "UNZIPFLAGS		= $UNZIPFLAGS
+	" >> $PROJECT_DIR/Makefile
+	echo "SOURCES_DIR		= $SOURCES_DIR
+	" >> $PROJECT_DIR/Makefile
+	echo "CFLAGS		= $CFLAGS
+	" >> $PROJECT_DIR/Makefile
+	echo "LDFLAGS		= $LDFLAGS
+	" >> $PROJECT_DIR/Makefile
+	echo 'OBJS		= $(SRCS:.c=.o)
+	' >> $PROJECT_DIR/Makefile
+	echo 'all:		$(NAME)
+	' >> $PROJECT_DIR/Makefile
+	echo '$(NAME):	$(OBJS)
+			$(CC) $(addprefix $(SOURCES_DIR)/,$(OBJS)) -o $(NAME)
+	' >> $PROJECT_DIR/Makefile
+	echo  'archive:
+		$(ZIP_NAME) $(ZIPFLAGS)  $(addprefix $(NAME),$(NEW)) $(addprefix $(SOURCES_DIR)/,$(SRCS)) $(HEADERS_DIR) $(LIBS_DIR) && echo  "$NAME.$NEW file generated.\n"
+		echo $(NEW) > $(VERSION)
+		' >> $PROJECT_DIR/Makefile
+	echo  'revert:
+	 $(UNZIP_NAME) $(UNZIPFLAGS) $(addprefix $(addprefix $(BACK_DIR)/, $(NAME)), $(NEW))
+	' >> $PROJECT_DIR/Makefile
+	echo  'delete:
+	 $(RM) $(addprefix $(addprefix $(BACK_DIR)/, $(NAME)), $(NEW))
+	' >> $PROJECT_DIR/Makefile
+	echo 'num:
+		@echo -e  your current version is $(LAST)
+	' >> $PROJECT_DIR/Makefile
+	echo 'clean:
+			$(RM) $(OBJS)
+	' >> $PROJECT_DIR/Makefile
+	echo 'fclean:	clean
+			$(RM) $(NAME)
+	' >> $PROJECT_DIR/Makefile
+	echo 're:	fclean all
+	' >> $PROJECT_DIR/Makefile
+	echo '.PHONY:	all clean fclean re
+	' >> $PROJECT_DIR/Makefile
+fi
